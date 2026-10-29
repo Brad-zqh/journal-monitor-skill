@@ -1,0 +1,9 @@
+{
+  "journals": [
+    {"name": "JCIT", "username": "", "password": ""}
+  ],
+  "email_sender": "",
+  "email_password": "",
+  "email_receiver": "",
+  "serverchan_key": ""
+}

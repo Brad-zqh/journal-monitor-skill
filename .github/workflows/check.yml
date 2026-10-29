@@ -1,0 +1,54 @@
+name: Check journal status
+
+on:
+  schedule:
+    # UTC 00:17 / 12:17 = Beijing 08:17 / 20:17.
+    - cron: "17 0,12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: journal-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    # Create a private runtime repository from this template, then opt in.
+    # Manuscript details can appear in portal and notification logs.
+    if: ${{ github.event.repository.private && vars.JOURNAL_MONITOR_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+      - name: Restore private status cache
+        uses: actions/cache@v4
+        with:
+          path: .journal-monitor
+          key: journal-status-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            journal-status-${{ github.ref_name }}-
+      - name: Run journal monitor
+        env:
+          JOURNAL_USERNAME: ${{ secrets.JOURNAL_USERNAME }}
+          JOURNAL_PASSWORD: ${{ secrets.JOURNAL_PASSWORD }}
+          RURAL_USERNAME: ${{ secrets.RURAL_USERNAME }}
+          RURAL_PASSWORD: ${{ secrets.RURAL_PASSWORD }}
+          IJCHM_USERNAME: ${{ secrets.IJCHM_USERNAME }}
+          IJCHM_PASSWORD: ${{ secrets.IJCHM_PASSWORD }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
+          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+          JOURNALS_ENABLED: ${{ vars.JOURNALS_ENABLED }}
+          SMTP_SERVER: ${{ vars.SMTP_SERVER || 'smtp.gmail.com' }}
+          SMTP_PORT: ${{ vars.SMTP_PORT || '587' }}
+        run: python check_journals.py

@@ -1,0 +1,34 @@
+{
+  "journals": [
+    {
+      "name": "JCIT",
+      "full": "Cities",
+      "enabled": false,
+      "platform": "editorialmanager",
+      "url": "https://www.editorialmanager.com/jcit/default2.aspx",
+      "username_env": "JOURNAL_USERNAME",
+      "password_env": "JOURNAL_PASSWORD"
+    },
+    {
+      "name": "RURAL",
+      "full": "Journal of Rural Studies",
+      "enabled": false,
+      "platform": "editorialmanager",
+      "url": "https://www.editorialmanager.com/rural/default2.aspx",
+      "username_env": "RURAL_USERNAME",
+      "password_env": "RURAL_PASSWORD"
+    },
+    {
+      "name": "IJCHM",
+      "full": "International Journal of Contemporary Hospitality Management",
+      "enabled": false,
+      "platform": "scholarone",
+      "url": "https://mc.manuscriptcentral.com/ijchm",
+      "username_env": "IJCHM_USERNAME",
+      "password_env": "IJCHM_PASSWORD"
+    }
+  ],
+  "ignore_ids": [],
+  "status_overrides": {},
+  "notify_only_on_change": false
+}

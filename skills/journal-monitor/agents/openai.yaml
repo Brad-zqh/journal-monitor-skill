@@ -1,0 +1,4 @@
+interface:
+  display_name: "Journal Monitor"
+  short_description: "Manage journal tracking, schedules, and alerts safely"
+  default_prompt: "Use $journal-monitor to inspect and maintain the journal tracking workflow safely."
